@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vimshotri Dasha Progression</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .header .credit {
+            font-size: 14px;
+            opacity: 0.9;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .control-group {
+            display: inline-block;
+            margin: 8px 10px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select, input[type="date"] {
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            color: #495057;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        select:hover, input[type="date"]:hover {
+            border-color: #667eea;
+        }
+
+        select:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            padding: 12px 40px;
+            margin: 8px 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #output {
+            padding: 30px;
+        }
+
+        .rashi-box {
+            border: 2px solid #e9ecef;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            margin-top: 15px;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .rashi-box:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .rashi-box b {
+            color: #667eea;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .rashi-box::after {
+            content: '▼';
+            float: right;
+            color: #667eea;
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .rashi-box:hover::after {
+            transform: translateY(3px);
+        }
+
+        .details {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .nak-row {
+            border-bottom: 1px solid #dee2e6;
+            padding: 12px 8px;
+            transition: background 0.2s ease;
+            border-radius: 4px;
+        }
+
+        .nak-row:last-child {
+            border-bottom: none;
+        }
+
+        .nak-row:hover {
+            background: white;
+        }
+
+        .nak-row::before {
+            content: '•';
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+
+            .header h2 {
+                font-size: 24px;
+            }
+
+            .control-group {
+                display: block;
+                margin: 12px 0;
+            }
+
+            select, input[type="date"] {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+                margin: 12px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Vimshotri Dasha Progression</h2>
+        <div class="credit">by Abhinandan</div>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Start Date:</label>
+            <input type="date" id="startDate">
+        </div>
+
+        <div class="control-group">
+            <label>Planet:</label>
+            <select id="planet">
+                <option value="20">Sun</option>
+                <option value="33.33">Moon</option>
+                <option value="56.66">Mercury</option>
+                <option value="66.66">Venus</option>
+                <option value="66.33">Saturn</option>
+                <option value="53.33">Jupiter</option>
+                <option value="60">Rahu</option>
+                <option value="23.33">Ketu</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>Starting Rashi:</label>
+            <select id="rashiSelect"></select>
+        </div>
+
+        <button onclick="generate()">Generate Dasha</button>
+    </div>
+
+    <div id="output"></div>
+</div>
+
+<script>
+
+// ----------------------
+// RASHI DATA
+// ----------------------
+
+const rashiData = {
+Aries:[
+"Ashwini 1 – Aries – Aries",
+"Ashwini 2 – Aries – Taurus",
+"Ashwini 3 – Aries – Gemini",
+"Ashwini 4 – Aries – Cancer",
+"Bharani 1 – Aries – Leo",
+"Bharani 2 – Aries – Virgo",
+"Bharani 3 – Aries – Libra",
+"Bharani 4 – Aries – Scorpio",
+"Krittika 1 – Aries – Sagittarius"
+],
+
+Taurus:[
+"Krittika 2 – Taurus – Capricorn",
+"Krittika 3 – Taurus – Aquarius",
+"Krittika 4 – Taurus – Pisces",
+"Rohini 1 – Taurus – Aries",
+"Rohini 2 – Taurus – Taurus",
+"Rohini 3 – Taurus – Gemini",
+"Rohini 4 – Taurus – Cancer",
+"Mrigashira 1 – Taurus – Leo",
+"Mrigashira 2 – Taurus – Virgo"
+],
+
+Gemini:[
+"Mrigashira 3 – Gemini – Libra",
+"Mrigashira 4 – Gemini – Scorpio",
+"Ardra 1 – Gemini – Sagittarius",
+"Ardra 2 – Gemini – Capricorn",
+"Ardra 3 – Gemini – Aquarius",
+"Ardra 4 – Gemini – Pisces",
+"Punarvasu 1 – Gemini – Aries",
+"Punarvasu 2 – Gemini – Taurus",
+"Punarvasu 3 – Gemini – Gemini"
+],
+
+Cancer:[
+"Punarvasu 4 – Cancer – Cancer",
+"Pushya 1 – Cancer – Leo",
+"Pushya 2 – Cancer – Virgo",
+"Pushya 3 – Cancer – Libra",
+"Pushya 4 – Cancer – Scorpio",
+"Ashlesha 1 – Cancer – Sagittarius",
+"Ashlesha 2 – Cancer – Capricorn",
+"Ashlesha 3 – Cancer – Aquarius",
+"Ashlesha 4 – Cancer – Pisces"
+],
+
+Leo:[
+"Magha 1 – Leo – Aries",
+"Magha 2 – Leo – Taurus",
+"Magha 3 – Leo – Gemini",
+"Magha 4 – Leo – Cancer",
+"Purva Phalguni 1 – Leo – Leo",
+"Purva Phalguni 2 – Leo – Virgo",
+"Purva Phalguni 3 – Leo – Libra",
+"Purva Phalguni 4 – Leo – Scorpio",
+"Uttara Phalguni 1 – Leo – Sagittarius"
+],
+
+Virgo:[
+"Uttara Phalguni 2 – Virgo – Capricorn",
+"Uttara Phalguni 3 – Virgo – Aquarius",
+"Uttara Phalguni 4 – Virgo – Pisces",
+"Hasta 1 – Virgo – Aries",
+"Hasta 2 – Virgo – Taurus",
+"Hasta 3 – Virgo – Gemini",
+"Hasta 4 – Virgo – Cancer",
+"Chitra 1 – Virgo – Leo",
+"Chitra 2 – Virgo – Virgo"
+],
+
+Libra:[
+"Chitra 3 – Libra – Libra",
+"Chitra 4 – Libra – Scorpio",
+"Swati 1 – Libra – Sagittarius",
+"Swati 2 – Libra – Capricorn",
+"Swati 3 – Libra – Aquarius",
+"Swati 4 – Libra – Pisces",
+"Vishakha 1 – Libra – Aries",
+"Vishakha 2 – Libra – Taurus",
+"Vishakha 3 – Libra – Gemini"
+],
+
+Scorpio:[
+"Vishakha 4 – Scorpio – Cancer",
+"Anuradha 1 – Scorpio – Leo",
+"Anuradha 2 – Scorpio – Virgo",
+"Anuradha 3 – Scorpio – Libra",
+"Anuradha 4 – Scorpio – Scorpio",
+"Jyeshtha 1 – Scorpio – Sagittarius",
+"Jyeshtha 2 – Scorpio – Capricorn",
+"Jyeshtha 3 – Scorpio – Aquarius",
+"Jyeshtha 4 – Scorpio – Pisces"
+],
+
+Sagittarius:[
+"Mula 1 – Sagittarius – Aries",
+"Mula 2 – Sagittarius – Taurus",
+"Mula 3 – Sagittarius – Gemini",
+"Mula 4 – Sagittarius – Cancer",
+"Purva Ashadha 1 – Sagittarius – Leo",
+"Purva Ashadha 2 – Sagittarius – Virgo",
+"Purva Ashadha 3 – Sagittarius – Libra",
+"Purva Ashadha 4 – Sagittarius – Scorpio",
+"Uttara Ashadha 1 – Sagittarius – Sagittarius"
+],
+
+Capricorn:[
+"Uttara Ashadha 2 – Capricorn – Capricorn",
+"Uttara Ashadha 3 – Capricorn – Aquarius",
+"Uttara Ashadha 4 – Capricorn – Pisces",
+"Shravana 1 – Capricorn – Aries",
+"Shravana 2 – Capricorn – Taurus",
+"Shravana 3 – Capricorn – Gemini",
+"Shravana 4 – Capricorn – Cancer",
+"Dhanishta 1 – Capricorn – Leo",
+"Dhanishta 2 – Capricorn – Virgo"
+],
+
+Aquarius:[
+"Dhanishta 3 – Aquarius – Libra",
+"Dhanishta 4 – Aquarius – Scorpio",
+"Shatabhisha 1 – Aquarius – Sagittarius",
+"Shatabhisha 2 – Aquarius – Capricorn",
+"Shatabhisha 3 – Aquarius – Aquarius",
+"Shatabhisha 4 – Aquarius – Pisces",
+"Purva Bhadrapada 1 – Aquarius – Aries",
+"Purva Bhadrapada 2 – Aquarius – Taurus",
+"Purva Bhadrapada 3 – Aquarius – Gemini"
+],
+
+Pisces:[
+"Purva Bhadrapada 4 – Pisces – Cancer",
+"Uttara Bhadrapada 1 – Pisces – Leo",
+"Uttara Bhadrapada 2 – Pisces – Virgo",
+"Uttara Bhadrapada 3 – Pisces – Libra",
+"Uttara Bhadrapada 4 – Pisces – Scorpio",
+"Revati 1 – Pisces – Sagittarius",
+"Revati 2 – Pisces – Capricorn",
+"Revati 3 – Pisces – Aquarius",
+"Revati 4 – Pisces – Pisces"
+]
+};
+
+const rashis = Object.keys(rashiData);
+
+// fill dropdown
+rashis.forEach((r,i)=>{
+    document.getElementById("rashiSelect").innerHTML += 
+        `<option value="${i}">${r}</option>`;
+});
+
+function addDays(date, days){
+    let d = new Date(date);
+    d.setDate(d.getDate() + Math.floor(days));
+    return d;
+}
+
+function formatDate(d){
+    return d.toLocaleDateString("en-GB");
+}
+
+function toggle(id){
+    let el = document.getElementById(id);
+    el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+function generate(){
+
+    const startDate = document.getElementById("startDate").value;
+    const daysPerPada = parseFloat(document.getElementById("planet").value);
+    const startIndex = parseInt(document.getElementById("rashiSelect").value);
+
+    if(!startDate){
+        alert("Please select a start date");
+        return;
+    }
+
+    let currentDate = new Date(startDate);
+    let output = "";
+
+    for(let i=0;i<12;i++){
+
+        let rashiIndex = (startIndex + i) % 12;
+        let rashiName = rashis[rashiIndex];
+        let nakshatras = rashiData[rashiName];
+
+        let rashiStart = new Date(currentDate);
+
+        // total rashi duration
+        let rashiDays = nakshatras.length * daysPerPada;
+        let rashiEnd = addDays(currentDate, rashiDays);
+
+        output += `
+            <div class="rashi-box" onclick="toggle('detail${i}')">
+                <b>${rashiName}</b> 
+                (${formatDate(rashiStart)} - ${formatDate(rashiEnd)})
+            </div>
+
+            <div class="details" id="detail${i}">
+        `;
+
+        // nakshatra breakdown
+        nakshatras.forEach(nak=>{
+            let nakStart = new Date(currentDate);
+            let nakEnd = addDays(currentDate, daysPerPada);
+
+            output += `
+                <div class="nak-row">
+                    ${nak} : ${formatDate(nakStart)} - ${formatDate(nakEnd)}
+                </div>
+            `;
+
+            currentDate = nakEnd;
+        });
+
+        output += `</div>`;
+    }
+
+    document.getElementById("output").innerHTML = output;
+}
+
+</script>
+
+</body>
+</html>
